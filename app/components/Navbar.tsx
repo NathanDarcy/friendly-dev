@@ -1,12 +1,19 @@
-import { FaLaptopCode } from 'react-icons/fa'
+import { useState } from 'react'
+import { FaBars, FaLaptopCode, FaTimes } from 'react-icons/fa'
 import { NavLink } from 'react-router'
 
 export default function NavBar() {
+  const [menuOpen, setMenuOpen] = useState(false)
+
   const base = 'transition hover:text-blue-400'
   const active = 'text-blue-400 font-semibold'
 
   function getNavLinkClass({ isActive }: { isActive: boolean }) {
     return isActive ? active : base
+  }
+
+  function collapseMenu() {
+    setMenuOpen(false)
   }
 
   return (
@@ -39,7 +46,53 @@ export default function NavBar() {
             </NavLink>
           </div>
         </div>
+
+        <div className="md:hidden flex items-center gap-4">
+          <button
+            onClick={() => {
+              setMenuOpen(!menuOpen)
+            }}
+            className="text-blue-400 text-xl cursor-pointer"
+          >
+            {menuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
       </div>
+      {menuOpen && (
+        <div className="md:hidden bg-gray-800 border-t border-gray-700 px-6 py-4 space-y-2 space-x-4 text-center">
+          <NavLink to="/" onClick={collapseMenu} className={getNavLinkClass}>
+            Home
+          </NavLink>
+          <NavLink
+            to="/project"
+            onClick={collapseMenu}
+            className={getNavLinkClass}
+          >
+            Projects
+          </NavLink>
+          <NavLink
+            to="/blog"
+            onClick={collapseMenu}
+            className={getNavLinkClass}
+          >
+            Blog
+          </NavLink>
+          <NavLink
+            to="/about"
+            onClick={collapseMenu}
+            className={getNavLinkClass}
+          >
+            About
+          </NavLink>
+          <NavLink
+            to="/contact"
+            onClick={collapseMenu}
+            className={getNavLinkClass}
+          >
+            Contact
+          </NavLink>
+        </div>
+      )}
     </nav>
   )
 }
