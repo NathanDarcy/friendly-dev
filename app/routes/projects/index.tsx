@@ -2,12 +2,9 @@ import type { Project } from '~/types'
 import type { Route } from './+types'
 import ProjectCard from '~/components/ProjectCard'
 
-export async function loader({
-  request,
-}: Route.LoaderArgs): Promise<{ projects: Project[] }> {
-  if (request) {
-    console.log(request)
-  }
+export async function loader(): Promise<{
+  projects: Project[]
+}> {
   const response = await fetch('http:localhost:8000/projects')
   const data = await response.json()
 
