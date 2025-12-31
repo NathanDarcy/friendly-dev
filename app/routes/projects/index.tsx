@@ -2,6 +2,7 @@ import type { Project } from '~/types'
 import type { Route } from './+types'
 import ProjectCard from '~/components/ProjectCard'
 import { useState } from 'react'
+import Pagination from '~/components/Pagination'
 
 export async function loader(): Promise<{
   projects: Project[]
@@ -26,27 +27,6 @@ export default function ProjectPage({ loaderData }: Route.ComponentProps) {
   const firstPageIndex = lastPageIndex - PROJECTS_PER_PAGE
   const currentProjects = projects.slice(firstPageIndex, lastPageIndex)
 
-  function renderPagination() {
-    return (
-      <div className="flex justify-center gap-2 mt-8">
-        {Array.from({ length: totalPages }, (_, index) => {
-          const baseClassName = 'px-3 py-1 cursor-pointer rounded'
-          const dynamicClassName = `${currentPage === index + 1 ? 'bg-blue-600 text-white' : 'bg-gray-700 text-gray-200'}`
-          const className = `${baseClassName} ${dynamicClassName}`
-          return (
-            <button
-              key={index + 1}
-              onClick={() => setCurrentPage(index + 1)}
-              className={className}
-            >
-              {index + 1}
-            </button>
-          )
-        })}
-      </div>
-    )
-  }
-
   return (
     <>
       <h2 className="text-3xl text-white font-bold mb-8">Projects</h2>
@@ -57,7 +37,11 @@ export default function ProjectPage({ loaderData }: Route.ComponentProps) {
         ))}
       </div>
 
-      {totalPages > 1 && renderPagination()}
+      <Pagination
+        totalPages={totalPages}
+        currentPage={currentPage}
+        onPageChange={setCurrentPage}
+      />
     </>
   )
 }

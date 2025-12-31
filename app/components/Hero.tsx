@@ -1,9 +1,14 @@
 import { Link } from 'react-router'
 
+export type HeroProps = {
+  name?: string
+  text?: string
+}
+
 export default function Hero({
   name = 'Nathan',
   text = 'I am a full stack engineer with experience in java, typescript, vue and react.',
-}) {
+}: HeroProps) {
   return (
     <header className="text-center py-20 px-4 bg-gray-900 text-white transition-colors duration-300">
       <h2 className="text-4xl font-bold mb-4">Hey, I'm {name} 👋</h2>
