@@ -1,5 +1,3 @@
-import Hero from '~/components/Hero'
-
 export default function Home() {
   // const now = new Date().toISOString()
 
@@ -10,9 +8,5 @@ export default function Home() {
   //   console.log('client hydration at', now)
   // }
 
-  return (
-    <section>
-      <Hero name="Nathan" />
-    </section>
-  )
+  return <>Home Page</>
 }
