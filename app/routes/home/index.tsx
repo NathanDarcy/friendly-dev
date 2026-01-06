@@ -1,12 +1,23 @@
-export default function Home() {
-  // const now = new Date().toISOString()
+import FeaturedProjects from '~/components/FeaturedProjects'
+import type { Route } from './+types'
+import type { Project } from '~/types'
+import AboutPreview from '~/components/AboutPreview'
 
-  // if (typeof window === 'undefined') {
-  //   // on server, window only exists in client
-  //   console.log('server render at', now)
-  // } else {
-  //   console.log('client hydration at', now)
-  // }
+export async function loader(): Promise<{ projects: Project[] }> {
+  const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`)
 
-  return <>Home Page</>
+  const data = await response.json()
+
+  return { projects: data }
+}
+
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const { projects } = loaderData
+
+  return (
+    <>
+      <FeaturedProjects projects={projects} count={2} />
+      <AboutPreview />
+    </>
+  )
 }
