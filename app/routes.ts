@@ -13,6 +13,7 @@ export default [
     route('project', './routes/projects/index.tsx'),
     route('project/:id', './routes/projects/details.tsx'),
     route('blog', './routes/blog/index.tsx'),
+    route('blog/:slug', './routes/blog/details.tsx'),
     route('*', './routes/error/not-found.tsx'),
   ]),
 ] satisfies RouteConfig
