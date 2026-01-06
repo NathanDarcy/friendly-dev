@@ -1,6 +1,7 @@
 import FeaturedProjects from '~/components/FeaturedProjects'
 import type { Route } from './+types'
 import type { Project } from '~/types'
+import AboutPreview from '~/components/AboutPreview'
 
 export async function loader(): Promise<{ projects: Project[] }> {
   const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`)
@@ -16,6 +17,7 @@ export default function Home({ loaderData }: Route.ComponentProps) {
   return (
     <>
       <FeaturedProjects projects={projects} count={2} />
+      <AboutPreview />
     </>
   )
 }
