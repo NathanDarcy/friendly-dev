@@ -1,23 +1,39 @@
 import FeaturedProjects from '~/components/FeaturedProjects'
 import type { Route } from './+types'
-import type { Project } from '~/types'
+import type { PostMeta, Project } from '~/types'
 import AboutPreview from '~/components/AboutPreview'
+import LatestPost from '~/components/LatestPosts'
 
-export async function loader(): Promise<{ projects: Project[] }> {
-  const response = await fetch(`${import.meta.env.VITE_API_URL}/projects`)
+export async function loader({
+  request,
+}: Route.LoaderArgs): Promise<{ projects: Project[]; posts: PostMeta[] }> {
+  const url = new URL(request.url)
 
-  const data = await response.json()
+  const [projectResponse, postResponse] = await Promise.all([
+    fetch(`${import.meta.env.VITE_API_URL}/projects`),
+    fetch(new URL('/posts-meta.json', url)),
+  ])
 
-  return { projects: data }
+  if (!projectResponse.ok || !postResponse.ok) {
+    throw new Error('Failed to fetch projects or posts')
+  }
+
+  const [projects, posts] = await Promise.all([
+    projectResponse.json(),
+    postResponse.json(),
+  ])
+
+  return { projects, posts }
 }
 
 export default function Home({ loaderData }: Route.ComponentProps) {
-  const { projects } = loaderData
+  const { projects, posts } = loaderData
 
   return (
     <>
       <FeaturedProjects projects={projects} count={2} />
       <AboutPreview />
+      <LatestPost posts={posts} limit={3} />
     </>
   )
 }
