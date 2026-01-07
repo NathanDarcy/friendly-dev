@@ -1,6 +1,8 @@
 import type { PostMeta } from '~/types'
 import type { Route } from './+types/index'
 import PostCard from '~/components/PostCard'
+import { useState } from 'react'
+import Pagination from '~/components/Pagination'
 
 export async function loader({
   request,
@@ -25,15 +27,33 @@ export async function loader({
 }
 
 export default function BlogPage({ loaderData }: Route.ComponentProps) {
+  const [currentPage, setCurrentPage] = useState(1)
+  const POSTS_PER_PAGE = 5
+
   const { posts } = loaderData
+
+  const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE)
+  const lastPageIndex = currentPage * POSTS_PER_PAGE
+  const firstPageIndex = lastPageIndex - POSTS_PER_PAGE
+  const currentPosts = posts.slice(firstPageIndex, lastPageIndex)
 
   return (
     <div className="max-w-3xl mx-auto mt-10 px-6 py-6 bg-gray-900">
       <h2 className="text-3xl text-white font-bold mb-8">Blog</h2>
 
-      {posts.map((post) => (
+      {currentPosts.map((post) => (
         <PostCard key={post.slug} post={post} />
       ))}
+
+      {totalPages > 1 && (
+        <Pagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          onPageChange={(page) => {
+            setCurrentPage(page)
+          }}
+        />
+      )}
     </div>
   )
 }
