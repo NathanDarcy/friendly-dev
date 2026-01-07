@@ -36,9 +36,9 @@
   },
   {
     "id": "6",
-    "slug": "sample-new-post",
-    "title": "A new post example",
-    "excerpt": "Wow so much post here",
+    "slug": "how-to-add-new-post",
+    "title": "How to add a new post to the blog page",
+    "excerpt": "Instructions to add a new post",
     "date": "2026-01-01T00:00:00"
   }
 ]
